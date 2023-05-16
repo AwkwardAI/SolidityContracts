@@ -1,0 +1,48 @@
+pragma solidity ^0.8.0;
+
+contract PredictUpwardTrendingNFT {
+
+  // The list of NFTs on OpenSea
+  address[] public nfts;
+
+  // A mapping from NFTs to the number of times they have been viewed
+  mapping(address => uint256) public views;
+
+  // A constructor that sets the list of NFTs
+  constructor(address[] memory _nfts) {
+    nfts = _nfts;
+  }
+
+  // A function that gets the number of times an NFT has been viewed
+  function getViews(address _nft) public view returns(uint256) {
+    return views[_nft];
+  }
+
+  // A function that increments the number of times an NFT has been viewed
+  function viewNFT(address _nft) public {
+    // Increment the number of times the NFT has been viewed
+    views[_nft]++;
+  }
+
+  // A function that predicts the next upward trending NFT
+  function predictUpwardTrendingNFT() public view returns(address) {
+    // Get the NFT with the most views
+    address mostViewedNFT = nfts[0];
+    uint256 mostViews = views[nfts[0]];
+
+    // Loop through all of the NFTs
+    for (uint256 i = 1; i < nfts.length; i++) {
+      // Get the number of views for the current NFT
+      uint256 currentViews = views[nfts[i]];
+
+      // If the current NFT has more views than the most viewed NFT, update the most viewed NFT
+      if (currentViews > mostViews) {
+        mostViewedNFT = nfts[i];
+        mostViews = currentViews;
+      }
+    }
+
+    // Return the most viewed NFT
+    return mostViewedNFT;
+  }
+}
