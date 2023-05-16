@@ -1,0 +1,41 @@
+pragma solidity ^0.8.0;
+
+contract AddressesInteractingWithContract {
+
+  // The address of the contract we want to track
+  address public contractAddress;
+
+  // A mapping from addresses to the number of times they have interacted with the contract
+  mapping(address => uint256) public addressesInteractingWithContract;
+
+  // A constructor that sets the address of the contract we want to track
+  constructor(address _contractAddress) {
+    contractAddress = _contractAddress;
+  }
+
+  // An event that is emitted whenever an address interacts with the contract
+  event AddressInteractedWithContract(address indexed address);
+
+  // A function that increments the number of times an address has interacted with the contract
+  function interactWithContract(address _address) public {
+    // Increment the number of times the address has interacted with the contract
+    addressesInteractingWithContract[_address]++;
+
+    // Emit an event to indicate that the address has interacted with the contract
+    AddressInteractedWithContract(_address);
+  }
+
+  // A function that returns a list of addresses that have interacted with the contract
+  function getAddressesInteractingWithContract() public view returns(address[] memory) {
+    // Get all of the addresses that have interacted with the contract
+    address[] memory addresses = new address[](addressesInteractingWithContract.keys());
+
+    // Copy the addresses into the return array
+    for (uint256 i = 0; i < addresses.length; i++) {
+      addresses[i] = addressesInteractingWithContract[addresses[i]];
+    }
+
+    // Return the list of addresses
+    return addresses;
+  }
+}
