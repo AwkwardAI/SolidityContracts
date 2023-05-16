@@ -1,0 +1,80 @@
+//SPDX-License-Identifier: MIT 
+pragma solidity ^0.8.8; // select version of solidity ^ = everything above, >, <, =, != could look like >=0.8.8 <0.8.12
+// EVM, Ethereum Virtual Machine
+// Avalanch, Fantom, Polygon
+
+
+
+/**
+   * @title SimpleStoragetest
+   * @dev ContractDescription
+   * @custom:dev-run-script contracts/SimpleStorage.sol
+   */
+
+contract SimpleStorage{
+    uint256 favoriteNumber; 
+    // type, visability, variable name
+    //<-- global scope -- default = 0, gets initialized to 0
+    //private by default, add Public to be able to view -- getter function for favorite number
+    //"private" only seen in contract
+    //external - only visble external
+    //internal -- comon
+    
+    //People public person = People({favoriteNumber: 2, name: "Patrick"}); //names and strings need ""
+//array
+    //uint256[] public favoriteNumbersList;
+    People[] public people; //dynamic array because columns/rows aren't set [3] vs [3, 2]
+    
+    function addPerson(string memory _name, uint256 _favoriteNumber) public {
+    nameToFavoriteNumber[_name] = _favoriteNumber;
+    people.push(People(_favoriteNumber, _name)); //replaces below
+    //People memory newPerson = People({favoriteNumber: _favoriteNumber, name: _name});
+    //people.push(newPerson);
+    }
+
+ // mapping is a data structure. 
+
+    mapping(string => uint256) public nameToFavoriteNumber; // initialized to null number
+
+    struct People {
+        uint256 favoriteNumber;
+        string name;
+    }
+
+    function store(uint256 _favoriteNumber) public virtual { 
+        favoriteNumber = _favoriteNumber;
+        //retrieve(); //<-- will always cost gas when inside a function
+        //favoriteNumber = favoriteNumber +1; 
+        // adding "virtual" allows you to add override when you inherent a contract
+    } //local scope
+
+//view = read a state, pure = allows modification
+   // function add() public view returns(uint256){
+   //     return favoriteNumber;
+   // }
+    function retrieve() public view returns(uint256){
+        return favoriteNumber;
+        //return(1+1);  // costs gas only when called in contract
+    }
+//boolean, uint, int, address, bytes
+ //   bool hasFavoriteNumber = false;
+ //   uint256 favoriteNumber = 123;
+ //   string favoriteNumberInText = "One Hundred Twenty Three";
+ //   int256 favoriteInt = -5;
+ //   address myAddress = 0xD7fd128A2FD1382Fb286cB82b756F7B0e983B5A1;
+ //   bytes32 favoriteBytes = "five";
+ // Uint256 is assigned mem, string(struct, arrays) needs a storage assignment
+
+ // storage types: 
+ // Stack
+ // Memory - variable only exists temp, during txn - can be mod
+ // Storage - variable only exists permanent - can be mod
+ // Calldata - variable only exists temp, during txn - can't be mod
+ // Code
+ // Logs
+
+
+
+ //uint can take sizes = uint8 - uint256, in sections of 8
+ // byte can go to 32
+}
