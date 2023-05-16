@@ -1,0 +1,44 @@
+pragma solidity ^0.8.0;
+
+contract CheckWalletTransfers {
+
+  // The list of wallet addresses
+  address[] public walletAddresses;
+
+  // A mapping from wallet addresses to the balance of tokens in that address
+  mapping(address => uint256) public balances;
+
+  // A constructor that sets the list of wallet addresses
+  constructor(address[] memory _walletAddresses) {
+    walletAddresses = _walletAddresses;
+  }
+
+  // A function that gets the balance of tokens in a wallet address
+  function getBalance(address _walletAddress) public view returns(uint256) {
+    return balances[_walletAddress];
+  }
+
+  // A function that checks to see if funds were moved between any of the wallet addresses
+  function checkWalletTransfers() public view returns(bool) {
+    // Loop through all of the wallet addresses
+    for (uint256 i = 0; i < walletAddresses.length; i++) {
+      // Get the balance of the current wallet address
+      uint256 currentBalance = balances[walletAddresses[i]];
+
+      // Loop through all of the other wallet addresses
+      for (uint256 j = i + 1; j < walletAddresses.length; j++) {
+        // Get the balance of the current wallet address
+        uint256 otherBalance = balances[walletAddresses[j]];
+
+        // Check to see if there was a transfer between the two addresses
+        if (currentBalance != otherBalance) {
+          // There was a transfer between the two addresses
+          return true;
+        }
+      }
+    }
+
+    // There was no transfer between any of the addresses
+    return false;
+  }
+}
