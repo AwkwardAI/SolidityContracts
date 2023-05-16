@@ -1,28 +1,15 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.8; // most match across file types
 
-import "./SimpleStorage.sol"; // adds contract
+// inheritance makes a contract a 'child' of another contract
 
-contract StorageFactory  {
-    SimpleStorage[] public simpleStorageArray; //creates an array to save our storages
+    import "./SimpleStorage.sol"; // for extra storage to know about simple storage
 
-function createSimpleStorageContract() public { // declaration
-    SimpleStorage simpleStorage = new SimpleStorage(); //creates a new storage type
-    simpleStorageArray.push(simpleStorage); // adds the storage to array
-} // "new" indicates we are making a new contract
-// how does storage factory know what simple storage looks like?
-     function sfStore(uint256 _simpleStorageIndex, uint256 _simpleStorageNumber) public { //function to store
-         // needs Address, ABI
-         // SimpleStorage simpleStorage = simpleStorageArray[_simpleStorageIndex]; // () indicate address -- becomes this:
-         //simpleStorage.store(_simpleStorageNumber); -- becomes this: 
-         simpleStorageArray[_simpleStorageIndex].store(_simpleStorageNumber);
-     }
-     function sfGet(uint256 _simpleStorageIndex) public view returns(uint256){ //function to retrieve/view
-         // SimpleStorage simpleStorage = simpleStorageArray[_simpleStorageIndex];
-         // return simpleStorage.retrieve();
-         // above code can be simplified with this:
-         return simpleStorageArray[_simpleStorageIndex].retrieve();
-         // 'create' simple storage for each array element
+contract ExtraStorage is SimpleStorage{
+// +5, by overriding using "virtual" or "overdrive"
+function store(uint256 _favoriteNumber) public override {
+    favoriteNumber = _favoriteNumber +5;
+}
+// adding "virtual" to original function in OG script allows a function to become modified
 
-     }
 }
